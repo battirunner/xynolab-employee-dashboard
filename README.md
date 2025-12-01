@@ -1,36 +1,212 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Employee Management Dashboard
 
-## Getting Started
+A modern, responsive frontend dashboard built with Next.js for the Employee Management API. This application provides role-based access for administrators and employees with comprehensive features for managing employee data, attendance, and salary records.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Admin Features
+
+- **User Management**: Create, view, and manage system users with role assignment
+- **Employee Management**: Add, update, and view employee profiles and details
+- **Attendance Monitoring**: View attendance records for all employees with detailed analytics
+- **Salary Management**: Update salary payment status and view salary records
+- **Dashboard Analytics**: Overview of system metrics and recent activities
+
+### Employee Features
+
+- **Personal Dashboard**: Overview of personal metrics and quick actions
+- **Profile Management**: View personal and employment information
+- **Attendance Tracking**:
+  - Quick check-in/check-out functionality
+  - Submit leave requests and holiday requests
+  - View personal attendance history and statistics
+- **Salary Records**: View personal salary history and payment status
+
+### Technical Features
+
+- **Role-based Authentication**: Secure login with automatic role-based redirection
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **Modern UI**: Built with Tailwind CSS and shadcn/ui components
+- **Real-time Updates**: Dynamic data fetching and state management
+- **Form Validation**: Client-side validation with error handling
+- **Type Safety**: Full TypeScript implementation
+
+## 🛠️ Technology Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui, Radix UI
+- **State Management**: React Hooks + Context API
+- **Forms**: React Hook Form with Zod validation
+- **HTTP Client**: Axios
+- **Authentication**: JWT with js-cookie for storage
+- **Icons**: Lucide React
+- **Notifications**: Sonner
+
+## 📋 Prerequisites
+
+Before running this application, ensure you have:
+
+1. **Node.js** (v18 or higher)
+2. **npm** or **yarn** package manager
+3. **Employee Management API** running on `http://localhost:8000`
+
+## 🏗️ Installation
+
+1. **Navigate to the project directory:**
+
+   ```bash
+   cd employee-dashboard
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables:**
+   The `.env.local` file should contain:
+
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
+
+4. **Start the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🔧 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 🗂️ Project Structure
+
+```
+employee-dashboard/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── admin/             # Admin dashboard pages
+│   │   ├── employee/          # Employee dashboard pages
+│   │   ├── login/             # Authentication pages
+│   │   └── layout.tsx         # Root layout
+│   ├── components/            # Reusable UI components
+│   │   ├── ui/               # shadcn/ui components
+│   │   ├── layout/           # Layout components
+│   │   └── auth/             # Authentication components
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utility functions and API client
+│   └── types/                 # TypeScript type definitions
+├── public/                    # Static assets
+└── package.json              # Project dependencies
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Authentication & Authorization
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Login Flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Users login with username/password
+2. Application determines user role based on credentials
+3. Users are redirected to appropriate dashboard:
+   - Admins → `/admin`
+   - Employees → `/employee`
 
-## Learn More
+### Role-Based Access Control
 
-To learn more about Next.js, take a look at the following resources:
+- **Admin Users**: Full access to all features and data
+- **Employee Users**: Access only to personal data and features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Default Credentials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Based on your API setup, you can use:
 
-## Deploy on Vercel
+- **Admin**: Username containing "admin"
+- **Employee**: Any other username created via the API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📱 User Interface
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Admin Dashboard
+
+- **Overview Dashboard**: Metrics cards and recent activity
+- **Users Management**: Create and manage system users
+- **Employees Management**: Add/edit employee profiles
+- **Attendance Monitoring**: View all employee attendance with filters
+- **Salary Management**: Update payment status and view records
+
+### Employee Dashboard
+
+- **Personal Dashboard**: Personal metrics and quick actions
+- **Profile**: View personal information
+- **Attendance**: Check-in/out, submit leave requests, view history
+- **Salary**: View salary history and payment status
+
+## 🔗 API Integration
+
+The application integrates with the Employee Management API with the following endpoints:
+
+### Authentication
+
+- `POST /auth/login` - User login
+
+### Admin Endpoints
+
+- `GET /admin/users` - Get all users
+- `POST /admin/users` - Create user
+- `GET /admin/employees` - Get all employees
+- `POST /admin/employees` - Create employee
+- `PUT /admin/employees/{id}` - Update employee
+- `PUT /admin/salary-records/{id}` - Update salary status
+
+### Employee Endpoints
+
+- `GET /employees/me` - Get personal profile
+- `GET /employees/me/salary-records` - Get personal salary records
+
+### Attendance Endpoints
+
+- `POST /attendance/check-in` - Check in
+- `POST /attendance/check-out` - Check out
+- `GET /attendance/my-attendance` - Get personal attendance
+- `POST /attendance/` - Submit attendance request
+
+## 🚀 Getting Started
+
+1. **Start the Employee Management API** (ensure it's running on `http://localhost:8000`)
+
+2. **Run this frontend application:**
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Access the application:**
+
+   - Navigate to [http://localhost:3000](http://localhost:3000)
+   - You'll be redirected to the login page
+
+4. **Login with credentials:**
+   - Use credentials created via the API's admin interface
+   - Admin users: usernames containing "admin"
+   - Employee users: other usernames
+
+## 📞 Support
+
+For issues and questions:
+
+1. Ensure the Employee Management API is running and accessible
+2. Check browser console for error messages
+3. Verify all dependencies are installed correctly
+4. Check the `.env.local` file for correct API URL
+
+---
+
+Built with ❤️ using Next.js, TypeScript, and Tailwind CSS
