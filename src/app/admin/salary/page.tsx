@@ -164,12 +164,12 @@ export default function SalaryPage() {
                       }
                     </TableCell>
                     <TableCell>{record.month}/{record.year}</TableCell>
-                    <TableCell>${record.basic_salary.toLocaleString()}</TableCell>
-                    <TableCell>${record.overtime.toLocaleString()}</TableCell>
-                    <TableCell>${record.bonus.toLocaleString()}</TableCell>
-                    <TableCell>${record.deductions.toLocaleString()}</TableCell>
+                    <TableCell>{record.basic_salary.toLocaleString()} BDT</TableCell>
+                    <TableCell>{record.overtime.toLocaleString()} BDT</TableCell>
+                    <TableCell>{record.bonus.toLocaleString()} BDT</TableCell>
+                    <TableCell>{record.deductions.toLocaleString()} BDT</TableCell>
                     <TableCell className="font-medium">
-                      ${record.net_salary.toLocaleString()}
+                      {record.net_salary.toLocaleString()} BDT
                     </TableCell>
                     <TableCell>
                       <Badge 

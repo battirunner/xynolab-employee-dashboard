@@ -77,7 +77,7 @@ export default function EmployeeProfilePage() {
                   <p className="text-sm font-semibold">{profile.last_name}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
                 <div>
@@ -123,18 +123,29 @@ export default function EmployeeProfilePage() {
                   <p className="text-sm font-semibold">{profile.employee_id}</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  {/* <Calendar className="h-4 w-4 text-muted-foreground" /> */}
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">Hire Date</label>
                     <p className="text-sm font-semibold">
-                      {new Date(profile.hire_date).toLocaleDateString()}
+                      {(() => {
+                        try {
+                          const date = new Date(profile.hire_date);
+                          return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          });
+                        } catch {
+                          return 'Not available';
+                        }
+                      })()}
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center space-x-2">
-                <Building className="h-4 w-4 text-muted-foreground" />
+                {/* <Building className="h-4 w-4 text-muted-foreground" /> */}
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Department</label>
                   <p className="text-sm font-semibold">{profile.department}</p>
@@ -147,17 +158,30 @@ export default function EmployeeProfilePage() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                {/* <DollarSign className="h-4 w-4 text-muted-foreground" /> */}
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Base Salary</label>
-                  <p className="text-sm font-semibold">${profile.salary.toLocaleString()}</p>
+                  <p className="text-sm font-semibold">
+                    {profile.base_salary ? `${profile.base_salary.toLocaleString()} BDT` : 'Not set'}
+                  </p>
                 </div>
               </div>
 
               <div className="pt-4 border-t">
                 <label className="text-sm font-medium text-muted-foreground">Account Created</label>
                 <p className="text-sm font-semibold">
-                  {new Date(profile.created_at).toLocaleDateString()}
+                  {(() => {
+                    try {
+                      const date = new Date(profile.created_at);
+                      return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      });
+                    } catch {
+                      return 'Not available';
+                    }
+                  })()}
                 </p>
               </div>
             </CardContent>
@@ -173,7 +197,16 @@ export default function EmployeeProfilePage() {
               <div>
                 <p className="font-medium">
                   You've been with us for{' '}
-                  {Math.floor((new Date().getTime() - new Date(profile.hire_date).getTime()) / (1000 * 60 * 60 * 24 * 365))} years
+                  {(() => {
+                    try {
+                      const hireDate = new Date(profile.hire_date);
+                      if (isNaN(hireDate.getTime())) return '0';
+                      const years = Math.floor((new Date().getTime() - hireDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+                      return Math.max(0, years); // Ensure non-negative
+                    } catch {
+                      return '0';
+                    }
+                  })()} years
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Thank you for your dedication and hard work!

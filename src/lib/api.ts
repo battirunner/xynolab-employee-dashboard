@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import {
   User,
   Employee,
@@ -11,6 +10,8 @@ import {
   UpdateEmployeeData,
   AttendanceCreate,
   SalaryUpdate,
+  InvitationCreate,
+  Invitation,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -22,10 +23,25 @@ const api = axios.create({
   },
 });
 
+// Public API instance (no auth headers)
+const publicApi = axios.create({
+  baseURL: `${API_BASE_URL}/api`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Token getter function - will be set by auth provider
+let getAuthToken: (() => string | null) | null = null;
+
+export const setAuthTokenGetter = (tokenGetter: () => string | null) => {
+  getAuthToken = tokenGetter;
+};
+
 // Request interceptor to add authorization header
 api.interceptors.request.use(
   (config) => {
-    const token = Cookies.get("access_token");
+    const token = getAuthToken?.() || (typeof window !== 'undefined' ? localStorage.getItem("access_token") : null);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -45,9 +61,11 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       !error.config?.url?.includes("/auth/login")
     ) {
-      Cookies.remove("access_token");
-      Cookies.remove("user_role");
-      window.location.href = "/login";
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user_role");
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
@@ -158,6 +176,19 @@ export const adminApi = {
     );
     return response.data;
   },
+
+  // Invitations
+  createInvitation: async (
+    invitationData: InvitationCreate
+  ): Promise<Invitation> => {
+    const response = await api.post("/admin/invitations", invitationData);
+    return response.data;
+  },
+
+  getAllInvitations: async (): Promise<Invitation[]> => {
+    const response = await api.get("/admin/invitations");
+    return response.data;
+  },
 };
 
 // Employee API
@@ -198,6 +229,19 @@ export const employeeApi = {
     attendanceData: AttendanceCreate
   ): Promise<AttendanceRecord> => {
     const response = await api.post("/attendance/", attendanceData);
+    return response.data;
+  },
+};
+
+// Invitation API (public - no auth required)
+export const invitationApi = {
+  validateToken: async (token: string) => {
+    const response = await publicApi.get(`/invitations/validate/${token}`);
+    return response.data;
+  },
+
+  acceptInvitation: async (invitationData: any) => {
+    const response = await publicApi.post("/invitations/accept", invitationData);
     return response.data;
   },
 };

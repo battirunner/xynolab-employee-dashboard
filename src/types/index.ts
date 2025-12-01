@@ -18,6 +18,7 @@ export interface Employee {
   position: string;
   hire_date: string;
   salary: number;
+  base_salary?: number;
   phone: string;
   address: string;
   emergency_contact: string;
@@ -107,4 +108,26 @@ export interface AttendanceCreate {
 
 export interface SalaryUpdate {
   status: 'pending' | 'paid';
+}
+
+export interface InvitationCreate {
+  email: string;
+  employee_id: string;
+  hire_date: string;
+  department?: string;
+  position?: string;
+  base_salary?: number;
+}
+
+export interface Invitation {
+  id: number;
+  email: string;
+  employee_id: string;
+  status: 'pending' | 'accepted' | 'expired';
+  hire_date: string;
+  department?: string;
+  position?: string;
+  base_salary?: number;
+  expires_at: string;
+  created_at: string;
 }

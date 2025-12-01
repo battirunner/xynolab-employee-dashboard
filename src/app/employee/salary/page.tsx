@@ -81,7 +81,7 @@ export default function EmployeeSalaryPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${currentSalary ? currentSalary.net_salary.toLocaleString() : 'N/A'}
+                {currentSalary ? `${currentSalary.net_salary.toLocaleString()} BDT` : 'N/A'}
               </div>
               <p className="text-xs text-muted-foreground">
                 {currentSalary ? (
@@ -101,7 +101,7 @@ export default function EmployeeSalaryPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${totalEarnings.toLocaleString()}</div>
+              <div className="text-2xl font-bold">{totalEarnings.toLocaleString()} BDT</div>
               <p className="text-xs text-muted-foreground">
                 From {paidRecords} paid salaries
               </p>
@@ -145,26 +145,26 @@ export default function EmployeeSalaryPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Basic Salary:</span>
-                    <span className="font-medium">${currentSalary.basic_salary.toLocaleString()}</span>
+                    <span className="font-medium">{currentSalary.basic_salary.toLocaleString()} BDT</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Overtime:</span>
-                    <span className="font-medium text-green-600">+${currentSalary.overtime.toLocaleString()}</span>
+                    <span className="font-medium text-green-600">+{currentSalary.overtime.toLocaleString()} BDT</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Bonus:</span>
-                    <span className="font-medium text-green-600">+${currentSalary.bonus.toLocaleString()}</span>
+                    <span className="font-medium text-green-600">+{currentSalary.bonus.toLocaleString()} BDT</span>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Deductions:</span>
-                    <span className="font-medium text-red-600">-${currentSalary.deductions.toLocaleString()}</span>
+                    <span className="font-medium text-red-600">-{currentSalary.deductions.toLocaleString()} BDT</span>
                   </div>
                   <div className="border-t pt-3">
                     <div className="flex items-center justify-between">
                       <span className="font-medium">Net Salary:</span>
-                      <span className="text-lg font-bold">${currentSalary.net_salary.toLocaleString()}</span>
+                      <span className="text-lg font-bold">{currentSalary.net_salary.toLocaleString()} BDT</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -204,11 +204,11 @@ export default function EmployeeSalaryPage() {
                 {salaryRecords.map((record) => (
                   <TableRow key={record.id}>
                     <TableCell className="font-medium">{record.month}/{record.year}</TableCell>
-                    <TableCell>${record.basic_salary.toLocaleString()}</TableCell>
-                    <TableCell className="text-green-600">+${record.overtime.toLocaleString()}</TableCell>
-                    <TableCell className="text-green-600">+${record.bonus.toLocaleString()}</TableCell>
-                    <TableCell className="text-red-600">-${record.deductions.toLocaleString()}</TableCell>
-                    <TableCell className="font-medium">${record.net_salary.toLocaleString()}</TableCell>
+                    <TableCell>{record.basic_salary.toLocaleString()} BDT</TableCell>
+                    <TableCell className="text-green-600">+{record.overtime.toLocaleString()} BDT</TableCell>
+                    <TableCell className="text-green-600">+{record.bonus.toLocaleString()} BDT</TableCell>
+                    <TableCell className="text-red-600">-{record.deductions.toLocaleString()} BDT</TableCell>
+                    <TableCell className="font-medium">{record.net_salary.toLocaleString()} BDT</TableCell>
                     <TableCell>
                       <Badge 
                         variant={record.status === 'paid' ? 'default' : 'secondary'}
